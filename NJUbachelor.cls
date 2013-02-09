@@ -4,38 +4,86 @@
 %                   基于 scart 宏包改进
 %              基于 ctex 宏包 和 xelatex 编译器
 %                 设计量量满足跨平台之需要
-%         暂时只能提供不可自定义的符合本科毕设要求的排版效果
+%         暂时只能提供少量自定义的符合本科毕设要求的排版效果
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2011/5/23 V1.0 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/02/09 V1.2 NJUbachelor Style for NJUers Created by Zlcao]
 
-\newif\ifNJU@shorttitle
+\newif\ifNJU@thesis
+\DeclareOption{thesis}{\NJU@thesistrue}
+\DeclareOption{design}{\NJU@thesisfalse}
+
+\newif\ifNJU@oneside
+\DeclareOption{oneside}{\NJU@onesidetrue}
+\DeclareOption{twoside}{\NJU@onesidefalse}
+
+\newif\ifNJU@pageheader
+\DeclareOption{pageheader}{\NJU@pageheadertrue}
+\DeclareOption{nopageheader}{\NJU@pageheaderfalse}
+
+\newif\ifNJU@chapter
+\DeclareOption{chapter}{\NJU@chaptertrue}
+\DeclareOption{nochapter}{\NJU@chapterfalse}
+
 \newif\ifNJU@longtitle
-\DeclareOption{shorttitle}{\NJU@shorttitletrue\NJU@longtitlefalse}
-\DeclareOption{longtitle}{\NJU@longtitletrue\NJU@shorttitlefalse}
+\DeclareOption{longtitle}{\NJU@longtitletrue}
+\DeclareOption{shorttitle}{\NJU@longtitlefalse}
 
 \newif\ifNJU@shortdepspe
-\newif\ifNJU@longdepspe
-\DeclareOption{shortdepspe}{\NJU@shortdepspetrue\NJU@longdepspefalse}
-\DeclareOption{longdepspe}{\NJU@longdepspetrue\NJU@shortdepspefalse}
+\DeclareOption{shortdepspe}{\NJU@shortdepspetrue}
+\DeclareOption{longdepspe}{\NJU@shortdepspefalse}
 
+\newif\ifNJU@defaultmath\NJU@defaultmathfalse
+\newif\ifNJU@mathptmx\NJU@mathptmxfalse
+\newif\ifNJU@txfonts\NJU@txfontsfalse
+\DeclareOption{defaultmath}{\NJU@defaultmathtrue}
+\DeclareOption{mathptmx}{\NJU@mathptmxtrue}
+\DeclareOption{txfonts}{\NJU@txfontstrue}
+
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexart}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
 
-\ExecuteOptions{longtitle,shortdepspe}
+\ExecuteOptions{thesis,oneside,nopageheader,nochapter,longtitle,shortdepspe,defaultmath}
 \ProcessOptions\relax
 
-\LoadClass[UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook} %载入ctex宏包以提供基本中文支持
+% 载入 ctex 文类
+\ifNJU@chapter
+  \ifNJU@oneside
+    \LoadClass[oneside,UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook}
+  \else
+    \LoadClass[twoside,UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook}
+  \fi
+\else
+  \LoadClass[UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexart}
+\fi
 
 \RequirePackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}   %页面设置
 
-\pagestyle{plain} % 页眉页脚
-\fancyhf{}
-\fancyhead[EC]{\fangsong 南京大学本科毕业论文（设计）}
-\fancyhead[OC]{\fangsong \leftmark}
-\fancyfoot[C]{\thepage}
+% 设置页眉页脚
+\ifNJU@pageheader
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+  \ifNJU@oneside
+    \fancyhead[L]{\fangsong 南京大学本科毕业论文（设计）}
+    \fancyhead[R]{\fangsong \leftmark}
+  \else
+    \fancyhead[EC]{\fangsong 南京大学本科毕业论文（设计）}
+    \fancyhead[OC]{\fangsong \leftmark}
+  \fi
+\else \pagestyle{plain}
+\fi
+
+% pdf相关属性设置 设置行距
+\AtBeginDocument{
+\hypersetup{pdftitle={\NJU@ctitle/\NJU@etitle},
+            pdfauthor={\NJU@cauthor/\NJU@eauthor},
+            pdfsubject={南京大学本科毕业论文（设计）}, 
+            pdfkeywords={\NJU@ckeywords/\NJU@ekeywords}}
+\setlength{\baselineskip}{1.26\baselineskip}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -44,8 +92,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{amsmath,amsfonts,amssymb,bm} %数学相关宏包支持
 \RequirePackage{stmaryrd} %数学字体宏包
+\ifNJU@mathptmx       \RequirePackage{mathptmx}
+\else\ifNJU@txfonts   \RequirePackage{txfonts}
+\fi\fi
 %\RequirePackage{mathspec}
-\RequirePackage{mathptmx} %New Time Roman数学字体宏包
 %\RequirePackage{mathabx} %数学字体宏包
 
 \RequirePackage{graphicx} %提供图形支持
@@ -66,7 +116,7 @@
 \RequirePackage{mhchem} %化学式宏包
 \RequirePackage{chemfig} %化学式宏包
 
-\RequirePackage[format=hang,font=small,justification=centering]{caption} %caption格式定制
+\RequirePackage[format=hang,font=small,justification=centering,labelfont=sf]{caption} %caption格式定制
 
 %\RequirePackage[colorlinks,citecolor=blue,linkcolor=blue]{hyperref} %PDF标签支持
 \RequirePackage[colorlinks,citecolor=black,linkcolor=black]{hyperref} %PDF标签支持
@@ -81,15 +131,22 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 设置列表环境
-\newenvironment{Description}[1]{\begin{list}{}
-{\renewcommand{\makelabel}[1]{##1}\settowidth\labelwidth{\makelabel{#1}}
-\itemsep=0.5em\setlength{\leftmargin}{\labelwidth+\labelsep}}}{\end{list}}
+\newenvironment{Description}[1]{\begin{list}{}{%
+  \renewcommand{\makelabel}[1]{##1}\settowidth\labelwidth{\makelabel{#1}}%
+  \itemsep=0.5em\setlength{\leftmargin}{\labelwidth+\labelsep}}}{\end{list}}
 
 % 清除双页
 \let\NJU@cleardoublepage\cleardoublepage
-\newcommand{\NJU@clearemptydoublepage}{
+\newcommand{\NJU@clearemptydoublepage}{%
   \clearpage{\pagestyle{empty}\NJU@cleardoublepage}}
 \let\cleardoublepage\NJU@clearemptydoublepage
+
+% 一种样式
+\newcommand{\makesomething}[1]{%
+  \begin{center}
+    \zihao{3}\songti\bf #1
+  \end{center}}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,6 +159,9 @@
 
 \setmainfont{Times New Roman}
 \setsansfont{Arial}
+\setmonofont{Courier New}
+
+\xeCJKsetup{AutoFakeSlant={true}}
 
 \setCJKmainfont{SimSun}
 \setCJKsansfont{SimHei}
@@ -131,6 +191,10 @@
 \providecommand*{\hupo}{\CJKfamily{zhhu}}     % 琥珀
 \providecommand*{\caiyun}{\CJKfamily{zhcai}}  % 彩云
 
+%% 图表标题字体声明
+%\DeclareCaptionFont{hei}{\heiti}
+%\DeclareCaptionFont{fang}{\fangsong}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -138,25 +202,33 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\CTEXoptions[
-%	contentsname={目录},listfigurename={插图},
-%	listtablename={表格},figurename={图},
-%	tablename={表},abstractname={},
-%	indexname={索引},bibname={参考文献}]
-\CTEXoptions[contentsname={目~~录},indexname={索~~引}]
-
+%  contentsname={目录},listfigurename={插图},
+%  listtablename={表格},figurename={图},
+%  tablename={表},abstractname={},
+%  indexname={索引},bibname={参考文献}]
+\ifNJU@chapter
+  \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
+\else
+  \CTEXoptions[contentsname={\makesomething{目~~~录}},indexname={\makesomething{索~~~引}}]
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                     标题格式/目录标题格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},
+\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},%
            nameformat={\zihao{3}\bf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
-\CTEXsetup[format={\sf\zihao{4}},numberformat={\sf}]{section}
-\CTEXsetup[format={\sf\zihao{-4}},numberformat={\sf}]{subsection}
-\CTEXsetup[format={\sf\zihao{-4}},numberformat={\sf}]{subsubsection}
-\titlecontents{chapter}[4em]{\vspace{1.6em}\sf\zihao{4}}
-	{\contentslabel{4.0em}}{\hspace{-4em}}{\hfill\bf\contentspage}
+\CTEXsetup[format={\sf\zihao{4}}]{section}
+\CTEXsetup[format={\sf\zihao{-4}}]{subsection}
+\CTEXsetup[format={\sf\zihao{-4}}]{subsubsection}
+\ifNJU@chapter
+  \titlecontents{chapter}[4em]{\vspace{1.6em}\sf\zihao{4}}%
+    {\contentslabel{4em}}{\hspace{-4em}}{\hfill\bf\contentspage}
+\else
+  \titlecontents{section}[1.5em]{\vspace{1.6em}\sf\zihao{4}}%
+    {\contentslabel{1.5em}}{\hspace{-4em}}{\hfill\bf\contentspage}
+\fi
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -217,57 +289,62 @@
 %                       摘要环境设置
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\makeckeywords}{\zihao{4}\begin{Description}{关键词:}
-\item[关键词:] \zihao{-4}\NJU@ckeywords
-\end{Description}}
-\newcommand{\makeekeywords}{\zihao{4}\begin{Description}{KEY WORDS:}
-\item[KEY WORDS:] \zihao{-4}\NJU@ekeywords
-\end{Description}}
-\newenvironment{cabstract}{\newpage\thispagestyle{empty}
-	\begin{center}
-	 \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）中文摘要}
-	\end{center}
-	\vspace{0.5em}\kaishu\zihao{4}\noindent
-	\begin{Description}{毕业论文题目:}
-	  \item[毕业论文题目:]
-	    \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
-	    \else \uline{\hfill\NJU@ctitle\hfill}
-	    \fi
-	\end{Description}
-	\ifNJU@shortdepspe
-	  \makebox[18em]{%
-	    \uline{\hfill\NJU@cdepartment\hfill}院系
-	    \uline{\hfill\NJU@cspecialization\hfill}专业}
-	  \uline{\makebox[1.8em][c]{\NJU@grade}}\ 级
+\newcommand{\makeckeywords}{\zihao{4}%
+  \begin{Description}{关键词:}
+    \item[关键词:] \zihao{-4}\NJU@ckeywords
+  \end{Description}}
+
+\newcommand{\makeekeywords}{\zihao{4}%
+  \begin{Description}{KEY WORDS:}
+    \item[KEY WORDS:] \zihao{-4}\NJU@ekeywords
+  \end{Description}}
+
+\newenvironment{cabstract}{\newpage\thispagestyle{empty}%
+  \begin{center}
+    \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）中文摘要}
+  \end{center}
+  \vspace{0.5em}\kaishu\zihao{4}\noindent
+  \begin{Description}{毕业论文题目:}
+    \item[毕业论文题目:]
+      \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
+      \else \uline{\hfill\NJU@ctitle\hfill}
+      \fi
+  \end{Description}
+  \ifNJU@shortdepspe
+    \makebox[18em]{%
+      \uline{\hfill\NJU@cdepartment\hfill} 院系
+      \uline{\hfill\NJU@cspecialization\hfill} 专业}
+      \uline{\makebox[1.8em][c]{\NJU@grade}} 级
 	  本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill}\\[0.6em]
-	\else
-	  \uline{\hfill\NJU@cdepartment\hfill}院系
-	  \uline{\hfill\NJU@cspecialization\hfill}专业\\[0.6em]
-	  \uline{\makebox[1.8em][c]{\NJU@grade}}\ 级
-	  本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill}
-	\fi
-	指导教师（姓名、职称）: 
-	\uline{\hfill{\NJU@cmentor ~\NJU@cmentortitle}\hfill}\\[0.6em]
-	摘要: 
-	
-	\vspace{1em}\zihao{-4}}
-	{\vfill\kaishu\makeckeywords\newpage\cleardoublepage}
-\newenvironment{eabstract}{\newpage\thispagestyle{empty}
-	\begin{center}
-	 \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）英文摘要}
-	\end{center}
-	\vspace{0.5em}\zihao{4}\noindent
-	\begin{Description}{THESIS:}
-	 \item[THESIS:] \NJU@etitle
-	 \item[DEPARTMENT:] \NJU@edepartment
-	 \item[SPECIALIZATION:] \NJU@especialization
-	 \item[UNDERGRADUATE:] \NJU@eauthor
-	 \item[MENTOR:] \NJU@ementortitle\ \NJU@ementor
-	 \item[ABSTRACT:]
-	\end{Description}
-	
-	\vspace{1em}\zihao{-4}}
-	{\vfill\makeekeywords\newpage\cleardoublepage}
+  \else
+    \uline{\hfill\NJU@cdepartment\hfill} 院系
+    \uline{\hfill\NJU@cspecialization\hfill} 专业\\[0.6em]
+    \uline{\makebox[1.8em][c]{\NJU@grade}} 级
+    本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill}
+  \fi
+  指导教师（姓名、职称）: 
+  \uline{\hfill{\NJU@cmentor\ \NJU@cmentortitle}\hfill}\\[0.6em]
+  摘要: 
+  
+  \vspace{1em}\zihao{-4}}
+  {\vfill\kaishu\makeckeywords\newpage\cleardoublepage}
+
+\newenvironment{eabstract}{\newpage\thispagestyle{empty}%
+  \begin{center}
+    \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）英文摘要}
+  \end{center}
+  \vspace{0.5em}\zihao{4}\noindent
+  \begin{Description}{THESIS:}
+    \item[THESIS:] \NJU@etitle
+    \item[DEPARTMENT:] \NJU@edepartment
+    \item[SPECIALIZATION:] \NJU@especialization
+    \item[UNDERGRADUATE:] \NJU@eauthor
+    \item[MENTOR:] \NJU@ementortitle\ \NJU@ementor
+    \item[ABSTRACT:]
+  \end{Description}
+
+  \vspace{1em}\zihao{-4}}
+  {\vfill\makeekeywords\newpage\cleardoublepage}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -277,42 +354,51 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Englishtitlepage % 这是以前课程论文的英文 titlepage
 %\newcommand{\makeetitlepage}{\begin{titlepage}\begin{center}
-%	\parbox[c][100mm][c]{\textwidth}{\huge \centering \NJU@etitle}\\[-36mm]
-%	\Large A thesis presented by\\ \smallskip \NJU@eauthor \\
-%	\bigskip	to\\	\bigskip \NJU@edepartment \\
-%	in partial fulfillment of the requirements of the course\\ \textit{\NJU@ecourse}
-%	\vfill \parbox[c][36mm][c]{\textwidth}{\centering \NJU@eschool \\ \NJU@edate}
+%  \parbox[c][100mm][c]{\textwidth}{\huge \centering \NJU@etitle}\\[-36mm]
+%  \Large A thesis presented by\\ \smallskip \NJU@eauthor \\
+%  \bigskip	to\\	\bigskip \NJU@edepartment \\
+%  in partial fulfillment of the requirements of the course\\ \textit{\NJU@ecourse}
+%  \vfill \parbox[c][36mm][c]{\textwidth}{\centering \NJU@eschool \\ \NJU@edate}
 %\end{center}\end{titlepage}}
 %    Chinesetitlepage
-\newcommand{\makectitlepage}{\thispagestyle{empty}\begin{titlepage}\vspace{3em}
-  \includegraphics[width=0.14\textwidth]{njulogos/njulogo.pdf}\vspace{2.6em}
-  \begin{center}
-    \includegraphics[width=0.5\textwidth]{njulogos/njuname.pdf}\\[2.8em]
-    \zihao{1}\bf 本~~科~~毕~~业~~设~~计\\
-    \vfill
-    \begin{minipage}{0.8\textwidth}
-      \zihao{3}\rm\kaishu
-      \begin{Description}{学生姓名}
-        \item[\bf\kaishu 院~~~~~~~~系] \uline{\hfill\NJU@cdepartment\hfill}
-        \item[\bf\kaishu 专~~~~~~~~业] \uline{\hfill\NJU@cspecialization\hfill}
-        \item[\bf\kaishu 题~~~~~~~~目] 
-          \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
-          \else \uline{\hfill\NJU@ctitle\hfill}
-          \fi
-        \item[\bf\kaishu 年~~~~~~~~级] \uline{\makebox[6em][c]{\NJU@grade}}
-             {\bf\kaishu 学  ~~~   号} \uline{\hfill\NJU@sid\hfill}
-        \item[\bf\kaishu 学生姓名]      \uline{\hfill\NJU@cauthor\hfill}
-        \item[\bf\kaishu 指导老师]      \uline{\makebox[6em][c]{\NJU@cmentor}}
-             {\bf\kaishu 职  ~~~   称}  \uline{\hfill\NJU@cmentortitle\hfill}
-        \item[\bf\kaishu 提交日期]      \uline{\hfill\NJU@cdate\hfill}
-      \end{Description}
-    \end{minipage}
-    \vfill
-  \end{center}
-\end{titlepage}\cleardoublepage}
+\newcommand{\makectitlepage}{\thispagestyle{empty}%
+  \begin{titlepage}\vspace{3em}
+    \includegraphics[width=0.14\textwidth]{njulogos/njulogo.pdf}\vspace{2.6em}
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{njulogos/njuname.pdf}\\[2.8em]
+      \zihao{1}\bf
+      \ifNJU@thesis 本~~科~~毕~~业~~论~~文
+      \else         本~~科~~毕~~业~~设~~计
+      \fi
+      \vfill
+      \begin{minipage}{0.8\textwidth}
+        \zihao{3}\rm\kaishu
+        \begin{Description}{学生姓名}
+          \item[\bf\kaishu 院~~~~~~~~系] \uline{\hfill\NJU@cdepartment\hfill}
+          \item[\bf\kaishu 专~~~~~~~~业] \uline{\hfill\NJU@cspecialization\hfill}
+          \item[\bf\kaishu 题~~~~~~~~目] 
+            \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
+            \else \uline{\hfill\NJU@ctitle\hfill}
+            \fi
+          \item[\bf\kaishu 年~~~~~~~~级] \uline{\makebox[6em][c]{\NJU@grade}}
+               {\bf\kaishu 学  ~~~   号} \uline{\hfill\NJU@sid\hfill}
+          \item[\bf\kaishu 学生姓名]      \uline{\hfill\NJU@cauthor\hfill}
+          \item[\bf\kaishu 指导老师]      \uline{\makebox[6em][c]{\NJU@cmentor}}
+               {\bf\kaishu 职  ~~~   称}  \uline{\hfill\NJU@cmentortitle\hfill}
+          \item[\bf\kaishu 提交日期]      \uline{\hfill\NJU@cdate\hfill}
+        \end{Description}
+      \end{minipage}
+      \vfill
+    \end{center}
+  \end{titlepage}\cleardoublepage}
+
 %    Chinesetitle
-\newcommand{\makectitle}{\begin{center}\zihao{3}\bf
-	\qquad\\[1.5em]\NJU@ctitle\\[2em]\end{center}}
+\ifNJU@chapter \newcommand{\makectitle}{}
+\else
+  \newcommand{\makectitle}
+    {\makesomething{\qquad\\[0.6em]\NJU@ctitle\\[2.6em]}}
+\fi
+
 %\newcommand{\makectitle}{\chapter*{\NJU@ctitle}}
 
 
@@ -321,7 +407,38 @@
 %                           常用命令
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \newcommand{\diff}{\mathrm{d}} %微分号
 \newcommand{\scite}[1]{\ensuremath{^{{\scriptsize\cite{#1}}}}} %文献引用 右上角
 \newcommand{\unit}[1]{\ensuremath{\,\mathrm{#1}}} %单位格式
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                         Change Log
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.2
+% ！ 封面毕业设计和毕业论文
+% 可以选择是否是否支持 \chapter
+% 页眉可随单双面打印自动调整样式
+% 1.1
+%
+% 利用延迟命令将 pdf 属性设置移入宏包内
+% 利用延迟命令将行距设置移入宏包内
+% 更新了图表标题字体
+% 开启中文斜体
+% 可选择数学字体 默认 mathptmx txfonts
+% 设置等宽字体 Courier New
+% 增加页眉选项
+%
+% 更新了宏包 1.0 的发布日期
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                         Todo List
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
