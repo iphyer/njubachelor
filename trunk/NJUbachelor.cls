@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/02/09 V1.2 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/02/15 V1.3 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -28,9 +28,12 @@
 \DeclareOption{chapter}{\NJU@chaptertrue}
 \DeclareOption{nochapter}{\NJU@chapterfalse}
 
-\newif\ifNJU@longtitle
+\newif\ifNJU@longtitle\NJU@longtitlefalse
+\newif\ifNJU@shorttitle\NJU@shorttitlefalse
+\newif\ifNJU@manualtitle\NJU@manualtitlefalse
 \DeclareOption{longtitle}{\NJU@longtitletrue}
-\DeclareOption{shorttitle}{\NJU@longtitlefalse}
+\DeclareOption{shorttitle}{\NJU@shorttitletrue\NJU@longtitlefalse}
+\DeclareOption{manualtitle}{\NJU@manualtitletrue\NJU@longtitlefalse}
 
 \newif\ifNJU@shortdepspe
 \DeclareOption{shortdepspe}{\NJU@shortdepspetrue}
@@ -84,6 +87,7 @@
             pdfsubject={南京大学本科毕业论文（设计）}, 
             pdfkeywords={\NJU@ckeywords/\NJU@ekeywords}}
 \setlength{\baselineskip}{1.26\baselineskip}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -252,6 +256,8 @@
 \newcommand{\ctitle}[1]{\def\NJU@ctitle{#1}}
 \def\NJU@etitle{}
 \newcommand{\etitle}[1]{\def\NJU@etitle{#1}}
+\def\NJU@mtitle{}
+\newcommand{\mtitle}[1]{\def\NJU@mtitle{#1}}
 % 导师
 \def\NJU@cmentor{}
 \newcommand{\cmentor}[1]{\def\NJU@cmentor{#1}}
@@ -307,7 +313,14 @@
   \begin{Description}{毕业论文题目:}
     \item[毕业论文题目:]
       \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
-      \else \uline{\hfill\NJU@ctitle\hfill}
+      \else
+        \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill}
+        \else
+          \ifNJU@manualtitle
+            \@for \NJU@mtitlen:=\NJU@mtitle \do
+              {\uline{\hfill\NJU@mtitlen\hfill}\par}
+          \fi
+        \fi
       \fi
   \end{Description}
   \ifNJU@shortdepspe
@@ -378,7 +391,14 @@
           \item[\bf\kaishu 专~~~~~~~~业] \uline{\hfill\NJU@cspecialization\hfill}
           \item[\bf\kaishu 题~~~~~~~~目] 
             \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
-            \else \uline{\hfill\NJU@ctitle\hfill}
+            \else
+              \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill}
+              \else
+                \ifNJU@manualtitle
+                  \@for \NJU@mtitlen:=\NJU@mtitle \do
+                    {\uline{\hfill\NJU@mtitlen\hfill}\par}
+                \fi
+              \fi
             \fi
           \item[\bf\kaishu 年~~~~~~~~级] \uline{\makebox[6em][c]{\NJU@grade}}
                {\bf\kaishu 学  ~~~   号} \uline{\hfill\NJU@sid\hfill}
@@ -420,12 +440,16 @@
 %                         Change Log
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.3
+% 新增了可以手动控制换行的标题排版方案
+% 修正了正文中的一些错误
+%
 % 1.2
 % ！ 封面毕业设计和毕业论文
 % 可以选择是否是否支持 \chapter
 % 页眉可随单双面打印自动调整样式
-% 1.1
 %
+% 1.1
 % 利用延迟命令将 pdf 属性设置移入宏包内
 % 利用延迟命令将行距设置移入宏包内
 % 更新了图表标题字体
