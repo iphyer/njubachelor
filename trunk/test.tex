@@ -1,4 +1,4 @@
-\documentclass[chapter,pageheader,shorttitle,txfonts]{NJUbachelor}
+\documentclass[chapter,shorttitle,mathtxf]{NJUbachelor}
 
 \sid{091120000}
 \grade{09}
@@ -19,7 +19,7 @@
 \ementortitle{Prof.}
 \ekeywords{Nanjing University (NJU); Bachelor's Thesis; \LaTeX{} Template}
 
-%\includeonly{chapters/chapter2}
+%\includeonly{chapters/chapter3}
 
 \begin{document}
 
@@ -29,15 +29,18 @@
 
 \include{chapters/chapter2}
 
+\include{chapters/chapter3}
+
 %\include{chapters/chapter0}
 
 
 
-%\backmatter
-%
-%\begin{thebibliography}{9}
-%\bibitem{a}
-%aaa
-%\end{thebibliography}
+\backmatter
+
+\nocite{*}
+\bibliographystyle{test}
+%\bibliography{refs/articles,refs/books}
+\bibliography{refs/jabrefbib}
+
 
 \end{document}

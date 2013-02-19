@@ -10,15 +10,17 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/02/15 V1.3 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/02/19 V1.7 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
 \DeclareOption{design}{\NJU@thesisfalse}
 
 \newif\ifNJU@oneside
-\DeclareOption{oneside}{\NJU@onesidetrue}
-\DeclareOption{twoside}{\NJU@onesidefalse}
+\DeclareOption{oneside}{\NJU@onesidetrue%
+  \PassOptionsToClass{oneside}{ctexbook}\PassOptionsToClass{oneside}{ctexart}}
+\DeclareOption{twoside}{\NJU@onesidefalse%
+  \PassOptionsToClass{twoside}{ctexbook}\PassOptionsToClass{twoside}{ctexart}}
 
 \newif\ifNJU@pageheader
 \DeclareOption{pageheader}{\NJU@pageheadertrue}
@@ -39,12 +41,10 @@
 \DeclareOption{shortdepspe}{\NJU@shortdepspetrue}
 \DeclareOption{longdepspe}{\NJU@shortdepspefalse}
 
-\newif\ifNJU@defaultmath\NJU@defaultmathfalse
-\newif\ifNJU@mathptmx\NJU@mathptmxfalse
-\newif\ifNJU@txfonts\NJU@txfontsfalse
-\DeclareOption{defaultmath}{\NJU@defaultmathtrue}
-\DeclareOption{mathptmx}{\NJU@mathptmxtrue}
-\DeclareOption{txfonts}{\NJU@txfontstrue}
+\newif\ifNJU@notdefaultmath
+\DeclareOption{defaultmath}{\NJU@notdefaultmathfalse}
+\DeclareOption{mathptm}{\NJU@notdefaultmathtrue\def\NJU@mathpackage{mathptmx}}
+\DeclareOption{mathtxf}{\NJU@notdefaultmathtrue\def\NJU@mathpackage{txfonts}}
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexart}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
@@ -54,13 +54,9 @@
 
 % 载入 ctex 文类
 \ifNJU@chapter
-  \ifNJU@oneside
-    \LoadClass[oneside,UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook}
-  \else
-    \LoadClass[twoside,UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook}
-  \fi
+  \LoadClass[UTF8,nofonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook}
 \else
-  \LoadClass[UTF8,winfonts,a4paper,cs4size,fntef,fancyhdr]{ctexart}
+  \LoadClass[UTF8,nofonts,a4paper,cs4size,fntef,fancyhdr]{ctexart}
 \fi
 
 \RequirePackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}   %页面设置
@@ -84,7 +80,7 @@
 \AtBeginDocument{
 \hypersetup{pdftitle={\NJU@ctitle/\NJU@etitle},
             pdfauthor={\NJU@cauthor/\NJU@eauthor},
-            pdfsubject={南京大学本科毕业论文（设计）}, 
+            pdfsubject={南京大学本科毕业论文（设计）},
             pdfkeywords={\NJU@ckeywords/\NJU@ekeywords}}
 \setlength{\baselineskip}{1.26\baselineskip}}
 
@@ -96,11 +92,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{amsmath,amsfonts,amssymb,bm} %数学相关宏包支持
 \RequirePackage{stmaryrd} %数学字体宏包
-\ifNJU@mathptmx       \RequirePackage{mathptmx}
-\else\ifNJU@txfonts   \RequirePackage{txfonts}
-\fi\fi
-%\RequirePackage{mathspec}
-%\RequirePackage{mathabx} %数学字体宏包
+\ifNJU@notdefaultmath \RequirePackage{\NJU@mathpackage} \fi
 
 \RequirePackage{graphicx} %提供图形支持
 \RequirePackage{picinpar} %图文混排
@@ -122,11 +114,11 @@
 
 \RequirePackage[format=hang,font=small,justification=centering,labelfont=sf]{caption} %caption格式定制
 
-%\RequirePackage[colorlinks,citecolor=blue,linkcolor=blue]{hyperref} %PDF标签支持
 \RequirePackage[colorlinks,citecolor=black,linkcolor=black]{hyperref} %PDF标签支持
-%\RequirePackage{ulem} %下划线宏包 由CJKfntef代替 在ctex的选项中调用
 \RequirePackage{calc}
 
+\RequirePackage[numbers,sort&compress]{natbib}
+\RequirePackage{hypernat}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -305,7 +297,8 @@
     \item[KEY WORDS:] \zihao{-4}\NJU@ekeywords
   \end{Description}}
 
-\newenvironment{cabstract}{\newpage\thispagestyle{empty}%
+\newenvironment{cabstract}
+  {\newpage\thispagestyle{empty}\pdfbookmark[0]{摘要}{cabstract}%
   \begin{center}
     \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）中文摘要}
   \end{center}
@@ -335,14 +328,15 @@
     \uline{\makebox[1.8em][c]{\NJU@grade}} 级
     本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill}
   \fi
-  指导教师（姓名、职称）: 
+  指导教师（姓名、职称）:
   \uline{\hfill{\NJU@cmentor\ \NJU@cmentortitle}\hfill}\\[0.6em]
-  摘要: 
-  
+  摘要:
+
   \vspace{1em}\zihao{-4}}
   {\vfill\kaishu\makeckeywords\newpage\cleardoublepage}
 
-\newenvironment{eabstract}{\newpage\thispagestyle{empty}%
+\newenvironment{eabstract}
+  {\newpage\thispagestyle{empty}\pdfbookmark[0]{ABSTRACT}{eabstract}%
   \begin{center}
     \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）英文摘要}
   \end{center}
@@ -363,7 +357,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                         标题页及标题
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Englishtitlepage % 这是以前课程论文的英文 titlepage
 %\newcommand{\makeetitlepage}{\begin{titlepage}\begin{center}
@@ -374,7 +368,8 @@
 %  \vfill \parbox[c][36mm][c]{\textwidth}{\centering \NJU@eschool \\ \NJU@edate}
 %\end{center}\end{titlepage}}
 %    Chinesetitlepage
-\newcommand{\makectitlepage}{\thispagestyle{empty}%
+\newcommand{\makectitlepage}
+  {\thispagestyle{empty}\pdfbookmark[0]{封面}{cover}%
   \begin{titlepage}\vspace{3em}
     \includegraphics[width=0.14\textwidth]{njulogos/njulogo.pdf}\vspace{2.6em}
     \begin{center}
@@ -389,7 +384,7 @@
         \begin{Description}{学生姓名}
           \item[\bf\kaishu 院~~~~~~~~系] \uline{\hfill\NJU@cdepartment\hfill}
           \item[\bf\kaishu 专~~~~~~~~业] \uline{\hfill\NJU@cspecialization\hfill}
-          \item[\bf\kaishu 题~~~~~~~~目] 
+          \item[\bf\kaishu 题~~~~~~~~目]
             \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
             \else
               \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill}
@@ -425,10 +420,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                           常用命令
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\diff}{\mathrm{d}} %微分号
-\newcommand{\scite}[1]{\ensuremath{^{{\scriptsize\cite{#1}}}}} %文献引用 右上角
+%\newcommand{\scite}[1]{\ensuremath{^{\text{\cite{#1}}}}} %文献引用 右上角
+\newcommand{\scite}[1]{\textsuperscript{\cite{#1}}} %文献引用 右上角
 \newcommand{\unit}[1]{\ensuremath{\,\mathrm{#1}}} %单位格式
 
 
@@ -438,8 +434,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                         Change Log
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.7
+% 在 Linux 平台进行了测试并修复了一些兼容性问题
+% 
+% 1.6
+% 修复了引用连续参考文献的连字符问题
+% 国家标准的参考文献排版风格
+%
+% 1.5
+% 修复了 nochapter 时无法双面打印的问题
+%
+% 1.4
+% 优化了部分代码
+%
 % 1.3
 % 新增了可以手动控制换行的标题排版方案
 % 修正了正文中的一些错误
@@ -463,6 +472,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                         Todo List
-% 
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
