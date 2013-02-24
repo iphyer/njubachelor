@@ -1,4 +1,4 @@
-\documentclass[chapter,shorttitle,mathtxf]{NJUbachelor}
+\documentclass[pageheader,chapter,shorttitle,mathtxf]{NJUbachelor}
 
 \sid{091120000}
 \grade{09}
@@ -6,17 +6,15 @@
 \ctitle{南京大学本科毕业设计 \LaTeX{} 模板}
 \cdepartment{物理学院}
 \cspecialization{物理基地}
-\cmentor{老板}
-\cmentortitle{教授}
+\cmentor{老板}{教授}
 \ckeywords{南京大学; 本科毕设; \LaTeX{} 模板}
-\cdate{2013年2月6日}
+\cdate{2013年2月24日}
 
 \eauthor{Zengle Cao}
 \etitle{\LaTeX{} Template for Bachelor's Thesis of Nanjing University}
 \edepartment{School of Physics}
 \especialization{Physics}
-\ementor{Boss}
-\ementortitle{Prof.}
+\ementor{Boss}{Prof.}
 \ekeywords{Nanjing University (NJU); Bachelor's Thesis; \LaTeX{} Template}
 
 %\includeonly{chapters/chapter3}
@@ -36,11 +34,16 @@
 
 
 \backmatter
+\pagenumbering{Roman}
 
 \nocite{*}
 \bibliographystyle{test}
 %\bibliography{refs/articles,refs/books}
 \bibliography{refs/jabrefbib}
+
+\ack
+
+感谢
 
 
 \end{document}
