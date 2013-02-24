@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/02/19 V1.7 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/02/24 V1.8 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -205,7 +205,7 @@
 \ifNJU@chapter
   \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
 \else
-  \CTEXoptions[contentsname={\makesomething{目~~~录}},indexname={\makesomething{索~~~引}}]
+  \CTEXoptions[contentsname={\zihao{3}\songti\bf 目~~~录}]
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -215,7 +215,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},%
            nameformat={\zihao{3}\bf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
-\CTEXsetup[format={\sf\zihao{4}}]{section}
+\ifNJU@chapter
+  \CTEXsetup[format={\sf\zihao{4}}]{section}
+\else
+  \CTEXsetup[format+={\sf\zihao{4}}]{section}
+\fi
 \CTEXsetup[format={\sf\zihao{-4}}]{subsection}
 \CTEXsetup[format={\sf\zihao{-4}}]{subsubsection}
 \ifNJU@chapter
@@ -223,7 +227,7 @@
     {\contentslabel{4em}}{\hspace{-4em}}{\hfill\bf\contentspage}
 \else
   \titlecontents{section}[1.5em]{\vspace{1.6em}\sf\zihao{4}}%
-    {\contentslabel{1.5em}}{\hspace{-4em}}{\hfill\bf\contentspage}
+    {\contentslabel{1.5em}}{\hspace{-1.5em}}{\hfill\bf\contentspage}
 \fi
 
 
@@ -252,14 +256,9 @@
 \newcommand{\mtitle}[1]{\def\NJU@mtitle{#1}}
 % 导师
 \def\NJU@cmentor{}
-\newcommand{\cmentor}[1]{\def\NJU@cmentor{#1}}
+\newcommand{\cmentor}[2]{\def\NJU@cmentor{#1}\def\NJU@cmentortitle{#2}}
 \def\NJU@ementor{}
-\newcommand{\ementor}[1]{\def\NJU@ementor{#1}}
-% 导师职称
-\def\NJU@cmentortitle{}
-\newcommand{\cmentortitle}[1]{\def\NJU@cmentortitle{#1}}
-\def\NJU@ementortitle{}
-\newcommand{\ementortitle}[1]{\def\NJU@ementortitle{#1}}
+\newcommand{\ementor}[2]{\def\NJU@ementor{#1}\def\NJU@ementortitle{#2}}
 % 院系
 \def\NJU@cdepartment{}
 \newcommand{\cdepartment}[1]{\def\NJU@cdepartment{#1}}
@@ -305,13 +304,13 @@
   \vspace{0.5em}\kaishu\zihao{4}\noindent
   \begin{Description}{毕业论文题目:}
     \item[毕业论文题目:]
-      \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
+      \ifNJU@longtitle \uline{\NJU@ctitle\hfill\mbox{}}
       \else
-        \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill}
+        \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill\mbox{}}
         \else
           \ifNJU@manualtitle
             \@for \NJU@mtitlen:=\NJU@mtitle \do
-              {\uline{\hfill\NJU@mtitlen\hfill}\par}
+              {\uline{\hfill\NJU@mtitlen\hfill\mbox{}}\par}
           \fi
         \fi
       \fi
@@ -321,15 +320,15 @@
       \uline{\hfill\NJU@cdepartment\hfill} 院系
       \uline{\hfill\NJU@cspecialization\hfill} 专业}
       \uline{\makebox[1.8em][c]{\NJU@grade}} 级
-	  本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill}\\[0.6em]
+	  本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill\mbox{}}\\[0.6em]
   \else
     \uline{\hfill\NJU@cdepartment\hfill} 院系
-    \uline{\hfill\NJU@cspecialization\hfill} 专业\\[0.6em]
+    \uline{\hfill\NJU@cspecialization\hfill\mbox{}} 专业\\[0.6em]
     \uline{\makebox[1.8em][c]{\NJU@grade}} 级
     本科生姓名: \uline{\hfill{\NJU@cauthor}\hfill}
   \fi
   指导教师（姓名、职称）:
-  \uline{\hfill{\NJU@cmentor\ \NJU@cmentortitle}\hfill}\\[0.6em]
+  \uline{\hfill{\NJU@cmentor\ \NJU@cmentortitle}\hfill\mbox{}}\\[0.6em]
   摘要:
 
   \vspace{1em}\zihao{-4}}
@@ -382,25 +381,25 @@
       \begin{minipage}{0.8\textwidth}
         \zihao{3}\rm\kaishu
         \begin{Description}{学生姓名}
-          \item[\bf\kaishu 院~~~~~~~~系] \uline{\hfill\NJU@cdepartment\hfill}
-          \item[\bf\kaishu 专~~~~~~~~业] \uline{\hfill\NJU@cspecialization\hfill}
+          \item[\bf\kaishu 院~~~~~~~~系] \uline{\hfill\NJU@cdepartment\hfill\mbox{}}
+          \item[\bf\kaishu 专~~~~~~~~业] \uline{\hfill\NJU@cspecialization\hfill\mbox{}}
           \item[\bf\kaishu 题~~~~~~~~目]
-            \ifNJU@longtitle \uline{\NJU@ctitle\hfill}
+            \ifNJU@longtitle \uline{\NJU@ctitle\hfill\mbox{}}
             \else
-              \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill}
+              \ifNJU@shorttitle \uline{\hfill\NJU@ctitle\hfill\mbox{}}
               \else
                 \ifNJU@manualtitle
                   \@for \NJU@mtitlen:=\NJU@mtitle \do
-                    {\uline{\hfill\NJU@mtitlen\hfill}\par}
+                    {\uline{\hfill\NJU@mtitlen\hfill\mbox{}}\par}
                 \fi
               \fi
             \fi
           \item[\bf\kaishu 年~~~~~~~~级] \uline{\makebox[6em][c]{\NJU@grade}}
-               {\bf\kaishu 学  ~~~   号} \uline{\hfill\NJU@sid\hfill}
-          \item[\bf\kaishu 学生姓名]      \uline{\hfill\NJU@cauthor\hfill}
+               {\bf\kaishu 学  ~~~   号} \uline{\hfill\NJU@sid\hfill\mbox{}}
+          \item[\bf\kaishu 学生姓名]      \uline{\hfill\NJU@cauthor\hfill\mbox{}}
           \item[\bf\kaishu 指导老师]      \uline{\makebox[6em][c]{\NJU@cmentor}}
-               {\bf\kaishu 职  ~~~   称}  \uline{\hfill\NJU@cmentortitle\hfill}
-          \item[\bf\kaishu 提交日期]      \uline{\hfill\NJU@cdate\hfill}
+               {\bf\kaishu 职  ~~~   称}  \uline{\hfill\NJU@cmentortitle\hfill\mbox{}}
+          \item[\bf\kaishu 提交日期]      \uline{\hfill\NJU@cdate\hfill\mbox{}}
         \end{Description}
       \end{minipage}
       \vfill
@@ -411,10 +410,27 @@
 \ifNJU@chapter \newcommand{\makectitle}{}
 \else
   \newcommand{\makectitle}
-    {\makesomething{\qquad\\[0.6em]\NJU@ctitle\\[2.6em]}}
+    {\makesomething{\vspace*{1.6em}\NJU@ctitle\\[2.6em]}}
 \fi
 
-%\newcommand{\makectitle}{\chapter*{\NJU@ctitle}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                              致谢
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifNJU@chapter
+  \newcommand{\ack}{\newpage
+    \chapter*{致~~~谢}
+    \addcontentsline{toc}{chapter}{致谢}
+    \markboth{致谢}{致谢}}
+\else
+  \newcommand{\ack}{\newpage
+    \section*{致~~~谢}
+    \addcontentsline{toc}{section}{致谢}
+    \markboth{致谢}{致谢}}
+\fi
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -436,9 +452,17 @@
 %                         Change Log
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.8
+% 修改了导师及职称的获取命令
+% 增加了致谢
+% 修改 nochapter 下的 section 标题格式为居中
+% 修正了 nochapter 下无法编译带页眉效果的问题
+% 修正了 nochapter 选项下参考文献目录条目的对齐问题
+% 修复了某些平台上封面页所填内容左对齐的错误
+%
 % 1.7
 % 在 Linux 平台进行了测试并修复了一些兼容性问题
-% 
+%
 % 1.6
 % 修复了引用连续参考文献的连字符问题
 % 国家标准的参考文献排版风格

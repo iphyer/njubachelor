@@ -47,10 +47,13 @@
 可选的参数有
 \begin{description}
   \item[thesis/design] 封面页显示“本科毕业论文”或者“本科毕业设计”。
+    其中 \texttt{thesis} 为缺省设置。
   \item[oneside/twoside] 设置单面或者双面打印。
     双面打印会区分单双页，页眉和左右页边距都会根据单双页自动调整。
     双面打印时还会在必要的地方插入空白页。
+    其中 \texttt{oneside} 为缺省设置。
   \item[pageheader/nopageheader] 设置是否打印页眉。
+    \texttt{nopageheader} 为缺省设置。
   \item[chapter/nochapter] 设置是否支持章 \verb|\chapter{}| 层次。
     不使用章层次更符合学校要求。
     不使用章层次时，最高一级标题是 \verb|\section{节标题}|。
@@ -61,17 +64,32 @@
     使用章层次将无法在正文生成中文标题，
     中文标题的格式三号宋体加粗被套用给章，
     而节的格式仍然是四号黑体。
+    其中 \texttt{nochapter} 为缺省设置。
   \item[openright/openany] 如果有章层次，
     设置章层次可在任意页新起一页或者必须在右手（奇数）页新起一页。
+    其中 \texttt{openright} 为缺省设置。
   \item[longtitle/shorttitle/manualtitle]
     设置标题页和中文摘要纸的中文标题排版效果。
     长标题可支持自动换行，左对齐显示；
     短标题适合单行标题，可在横线上居中显示；
     手动标题可以利用 \verb|\mtitle| 命令提供手动换行支持，
     每一行标题都可以在横线上居中显示。
-  \item[shortdepspe/longdepspe] 
+    其中 \texttt{longtitle} 为缺省设置。
+  \item[shortdepspe/longdepspe]
     你可以根据自己院系和专业名的总长度进行选择。
     选择 shortdepspe 的排版效果和学校给出的中文摘要页是一样的；
     如果院系专业名太长，可以选择 longdepspe 选项。
+    其中 \texttt{shortdepspe} 为缺省设置。
   \item[defaultmath/mathptm/mathtxf] 你可以根据自己的喜好选择数学字体。
+    其中 \texttt{defaultmath} 为缺省设置。
 \end{description}
+
+
+\section{基本信息输入}
+
+论文基本信息的输入必须在生成标题页和摘要页之前（这似乎很显然）。
+建议你在导言区输入论文的基本信息，
+以便你的论文信息可以正确写入生成 pdf 的文件属性。
+根据学校所给标题页和中英文摘要纸的要求，
+本模板给出了以下这些命令来给出论文的基本信息。
+关于基本信息的输入，可以参考 start.tex。
