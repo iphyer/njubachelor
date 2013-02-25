@@ -47,7 +47,7 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexart}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
 
-\ExecuteOptions{thesis,oneside,nopageheader,nochapter,longtitle,shortdepspe,defaultmath}
+\ExecuteOptions{thesis,oneside,nopageheader,chapter,longtitle,shortdepspe,defaultmath}
 \ProcessOptions\relax
 
 % 载入 ctex 文类
@@ -136,11 +136,16 @@
 %                    ctex 中文格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ifNJU@chapter
-  \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
-\else
-  \CTEXoptions[contentsname={\zihao{3}\songti\bf 目~~~录}]
-\fi
+%\CTEXoptions[
+%  contentsname={目录},listfigurename={插图},
+%  listtablename={表格},figurename={图},
+%  tablename={表},abstractname={},
+%  indexname={索引},bibname={参考文献}]
+%\ifNJU@chapter
+% \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
+%\else
+  \CTEXoptions[contentsname={\makesomething{目~~~~录}},indexname={\makesomething{索~~~~引}}]
+%\fi
 \CJKsetecglue{}
 %\punctstyle{kaiming}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -148,22 +153,21 @@
 %                     标题格式/目录标题格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},%
-           nameformat={\zihao{3}\bf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
-\ifNJU@chapter
-  \CTEXsetup[format={\sf\zihao{4}}]{section}
-\else
-  \CTEXsetup[format+={\sf\zihao{4}}]{section}
-\fi
-\CTEXsetup[format={\sf\zihao{-4}}]{subsection}
-\CTEXsetup[format={\sf\zihao{-4}}]{subsubsection}
+%各部分标题
+\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{4}\sf},%
+           nameformat={\zihao{4}\sf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
+\CTEXsetup[format={\sf\zihao{4}}]{section}
+\CTEXsetup[format={\sf\zihao{4}}]{subsection}
+\CTEXsetup[format={\sf\zihao{4}}]{subsubsection}
 \ifNJU@chapter
   \titlecontents{chapter}[4em]{\vspace{1.6em}\sf\zihao{4}}%
     {\contentslabel{4em}}{\hspace{-4em}}{\hfill\bf\contentspage}
 \else
   \titlecontents{section}[1.5em]{\vspace{1.6em}\sf\zihao{4}}%
-    {\contentslabel{1.5em}}{\hspace{-1.5em}}{\hfill\bf\contentspage}
+    {\contentslabel{1.5em}}{\hspace{-4em}}{\hfill\bf\contentspage}
 \fi
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                     中英文作者、标题等
@@ -261,8 +265,10 @@
 \ifNJU@chapter \newcommand{\makectitle}{}
 \else
   \newcommand{\makectitle}
-    {\makesomething{\vspace*{1.6em}\NJU@ctitle\\[2.6em]}}
+    {\makesomething{\qquad\\[0.6em]\NJU@ctitle\\[2.6em]}}
 \fi
+
+%\newcommand{\makectitle}{\chapter*{\NJU@ctitle}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -381,8 +387,8 @@
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 2.0
-% 试验修改中……
-%
+% 试着修改中……
+% 
 % 1.6
 % 修复了引用连续参考文献的连字符问题
 % 国家标准的参考文献排版风格
