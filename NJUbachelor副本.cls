@@ -136,16 +136,11 @@
 %                    ctex 中文格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\CTEXoptions[
-%  contentsname={目录},listfigurename={插图},
-%  listtablename={表格},figurename={图},
-%  tablename={表},abstractname={},
-%  indexname={索引},bibname={参考文献}]
-%\ifNJU@chapter
-% \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
-%\else
-  \CTEXoptions[contentsname={\makesomething{目~~~~录}},indexname={\makesomething{索~~~~引}}]
-%\fi
+\ifNJU@chapter
+  \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
+\else
+  \CTEXoptions[contentsname={\zihao{3}\songti\bf 目~~~录}]
+\fi
 \CJKsetecglue{}
 %\punctstyle{kaiming}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -153,21 +148,22 @@
 %                     标题格式/目录标题格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%各部分标题
-\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{4}\sf},%
-           nameformat={\zihao{4}\sf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
-\CTEXsetup[format={\sf\zihao{4}}]{section}
-\CTEXsetup[format={\sf\zihao{4}}]{subsection}
-\CTEXsetup[format={\sf\zihao{4}}]{subsubsection}
+\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},%
+           nameformat={\zihao{3}\bf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
+\ifNJU@chapter
+  \CTEXsetup[format={\sf\zihao{4}}]{section}
+\else
+  \CTEXsetup[format+={\sf\zihao{4}}]{section}
+\fi
+\CTEXsetup[format={\sf\zihao{-4}}]{subsection}
+\CTEXsetup[format={\sf\zihao{-4}}]{subsubsection}
 \ifNJU@chapter
   \titlecontents{chapter}[4em]{\vspace{1.6em}\sf\zihao{4}}%
     {\contentslabel{4em}}{\hspace{-4em}}{\hfill\bf\contentspage}
 \else
   \titlecontents{section}[1.5em]{\vspace{1.6em}\sf\zihao{4}}%
-    {\contentslabel{1.5em}}{\hspace{-4em}}{\hfill\bf\contentspage}
+    {\contentslabel{1.5em}}{\hspace{-1.5em}}{\hfill\bf\contentspage}
 \fi
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %                     中英文作者、标题等
@@ -193,14 +189,9 @@
 \newcommand{\mtitle}[1]{\def\NJU@mtitle{#1}}
 % 导师
 \def\NJU@cmentor{}
-\newcommand{\cmentor}[1]{\def\NJU@cmentor{#1}}
+\newcommand{\cmentor}[2]{\def\NJU@cmentor{#1}\def\NJU@cmentortitle{#2}}
 \def\NJU@ementor{}
-\newcommand{\ementor}[1]{\def\NJU@ementor{#1}}
-% 导师职称
-\def\NJU@cmentortitle{}
-\newcommand{\cmentortitle}[1]{\def\NJU@cmentortitle{#1}}
-\def\NJU@ementortitle{}
-\newcommand{\ementortitle}[1]{\def\NJU@ementortitle{#1}}
+\newcommand{\ementor}[2]{\def\NJU@ementor{#1}\def\NJU@ementortitle{#2}}
 % 院系
 \def\NJU@cdepartment{}
 \newcommand{\cdepartment}[1]{\def\NJU@cdepartment{#1}}
@@ -270,10 +261,8 @@
 \ifNJU@chapter \newcommand{\makectitle}{}
 \else
   \newcommand{\makectitle}
-    {\makesomething{\qquad\\[0.6em]\NJU@ctitle\\[2.6em]}}
+    {\makesomething{\vspace*{1.6em}\NJU@ctitle\\[2.6em]}}
 \fi
-
-%\newcommand{\makectitle}{\chapter*{\NJU@ctitle}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
