@@ -91,5 +91,65 @@
 建议你在导言区输入论文的基本信息，
 以便你的论文信息可以正确写入生成 pdf 的文件属性。
 根据学校所给标题页和中英文摘要纸的要求，
-本模板给出了以下这些命令来给出论文的基本信息。
-关于基本信息的输入，可以参考 start.tex。
+本模板定义了以下命令来给出论文的基本信息。
+关于基本信息的输入，可以参考 start.tex，这里就不赘述了。
+
+
+\section{正文前内容}
+
+正文前内容包括封面，中英文摘要纸和目录。
+首先，封面页由命令 $$ \verb|\makectitlepage| $$ 生成。
+它将自动把导言区输入的论文基本信息填写到封面相应的空缺处。
+然后分别是中英文标题页，它们分别由中英文摘要环境给出
+
+{\vspace{-0.2em}%
+\begin{verbatim}
+            \begin{cabstract}      \begin{eabstract}
+              中文摘要。              English abstract.
+            \end{cabstract}        \end{eabstract}
+\end{verbatim}}
+
+\vspace{-0.2em}\noindent
+你只需要在环境中写入摘要的内容，
+摘要纸的其它空缺同样会依据导言区给出的基本信息自动进行填充。
+最后是目录。
+学校规定非正文内容要用大写罗马数字作页码。
+所以首先利用命令 \verb|\pagenumbering{Roman}| 规定页眉格式。
+同时目录页是不需要页眉的，
+因此使用 \verb|\thispagestyle{plain}| 规定页面样式为无页眉。
+如果使用的是 nochapter 模式，
+目录标题作为节层次，摆放的位置会略微偏高，影响美观，
+可以试着插入一条 \verb|\vspace*{0em}| 命令。
+为了让生成 pdf 的标签带有目录这一条目，
+再插入命令 \verb|\pdfbookmark[0]{目录}{contents}|。
+最后，是正式的目录生成命令 $$\verb|\tableofcontents|$$
+至此，正文前的内容就全部输入完成了。
+
+
+\section{正文书写}
+
+正文需要另起一页并用阿拉伯数字编号页码，
+需要用到命令 \verb|\newpage| 和 \verb|\pagenumbering{arabic}|。
+正文第一页一般同样无页眉，因此再跟一条命令 \verb|\thispagestyle{plain}|。
+接着，生成正文标题 $$\verb|\makectitle|$$
+需要注意的是，chapter 模式下我强行把这一命令设置为空，
+即使使用也无法得到输出。
+同时，这一模式下我把标题的格式赋给了章标题。
+因此 chapter 模式并不很符合学校所给文件的要求。
+
+接着，就可以书写论文正文了。
+根据个人的使用经验，为了方便，这里还给出了三个常用的自定义命令。
+\begin{description}
+  \item[\texttt{\textbackslash{}diff}]
+    定义了微分算符，用法前面已经提到。
+  \item[\texttt{\textbackslash{}scite\{citekey\}}]
+    用以提供参考文献引用的上标效果。
+  \item[\texttt{\textbackslash{}unit\{UNIT\}}]
+    定义了单位命令，如输入 \verb|5\unit{cm^{2}}|，
+    得到 5\unit{cm^{2}}，单位自动写成正体，并与数字空开一点距离。
+\end{description}
+
+\section{正文后内容}
+
+正文后内容也需要用 \verb|\newpage| 另起一页，
+并用 \verb|\pagenumbering{Roman}| 设置页码为大写罗马数字。
