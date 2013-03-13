@@ -201,7 +201,7 @@
 罗列环境还可以嵌套使用。
 
 最后说一下中文排版。
-中文排版只需要将 \LaTeX{} 预置的三种文类 
+中文排版只需要将 \LaTeX{} 预置的三种文类
 \texttt{article}，\texttt{report} 和 \texttt{book}
 替换为 \texttt{ctexart}，\texttt{ctexrep} 和 \texttt{ctexbook} 即可。
 中英文混排中，需要注意的一个细节是中英之间的空格。
@@ -225,6 +225,8 @@
 
 
 \section{公式}
+
+\subsection{公式输入基础}
 
 前面多次提到 \LaTeX{} 比起 Word 很大的一个优势，就是它的公式输入和排版。
 先说说它的排版效果吧。
@@ -324,4 +326,61 @@ $  \int_{-1}^{1} \frac{f(x)}{\sqrt{1-x^2}}\,\mathrm{d}x
 应该不难理解吧。
 
 
+\subsection{带编号的公式}
 
+使用 \verb|$| 和 \verb|$$| 引导公式是 \TeX{} 提供的最基本功能。
+\LaTeX{} 提供了更加全面的公式环境，帮助排版各种复杂的公式。
+首先是自动编号的公式环境。
+利用
+
+{%\small\vspace{-0.2em}
+\begin{verbatim}
+                   \begin{equation}
+                     公式代码
+                   \end{equation}
+\end{verbatim}}
+
+\vspace{-0.4em}\noindent
+即可生成带编号的公式，进而进行交叉引用，这在后面会提到。
+如果把 \verb|equation| 替换为 \verb|equation*|，
+则排版出不带编号的公式。
+
+
+\subsection{多行公式}
+
+仅多行公式可以利用 \verb|gather| 环境实现
+
+{
+\begin{verbatim}
+                   \begin{gather}
+                     公式代码1 \\
+                     公式代码2
+                   \end{gather}
+\end{verbatim}}
+
+\vspace{-0.4em}\noindent
+同样，如果不需要公式编号，也只需在 \verb|gather| 后加 \verb|*| 即可。
+如果仅某行公式不需要编号，
+可以在公式代码末尾，换行符号之前利用 \verb|\nonumber| 命令取消编号。
+
+有时候，几行公式需要在等号处对齐，可使用 \verb|align| 环境。
+配合对齐符号 \verb|&| 即可实现公式内的对齐。
+{
+\begin{verbatim}
+                   \begin{align}
+                     x &= 公式代码1 \\
+                       &= 公式代码2
+                   \end{align}
+\end{verbatim}}
+
+\vspace{-0.4em}\noindent
+对公式编号的处理与 \verb|gather| 环境是相同的。
+
+最基本的公式输入就介绍到这里。
+
+
+\section{插图、表格及其他}
+
+关于插图、表格及其他，说起来甚为繁复，
+但掌握 \LaTeX{} 最基本的一些概念后，学起来应该不难。
+如有需要，可以参见项目主页上提供的一些教程。

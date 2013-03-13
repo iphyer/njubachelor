@@ -153,3 +153,44 @@
 
 正文后内容也需要用 \verb|\newpage| 另起一页，
 并用 \verb|\pagenumbering{Roman}| 设置页码为大写罗马数字。
+正文后内容包括参考文献，致谢和附录。
+
+参考文献的排版方式有两种。
+一种是利用 \verb|thebibliography| 环境来实现，
+其实现方法如下
+
+{\vspace{-0.2em}%
+\begin{verbatim}
+            \begin{thebibliography}{n}
+              \bibitem{citekey1} bibitem1
+              \bibitem{citekey2} bibitem2
+                ...  ...  ...  ...  ...
+            \end{thebibliography}
+\end{verbatim}}
+
+\vspace{-0.2em}\noindent
+其中数字 \texttt{n} 的位数应与参考文献条目数的位数相同。
+如你有18条参考文献，则 \texttt{n} 可以是任何两位数。
+这个参数用于参考文献前数字的对齐。
+\texttt{citekey1} 和 \texttt{citekey2} 是参考文献的引用标记，
+你可以把 \texttt{bibitem1} 和 \texttt{bibitem2}
+按照一定的格式，手动替换成你的参考文献条目。
+
+另一种方法是使用 bibtex 管理参考文献。
+模板附带了 bibtex 样式文件 NJUbachelor.bst，
+系统可以按照样式文件的定义，自动排版文献数据库并得到参考文献列表。
+bibtex 系统的使用在此就不赘述了，感兴趣的同学可以自行百度。
+
+致谢的生成也十分简单，利用命令 $$\verb|\ack|$$
+系统就会新起一页，并生成致谢标题。
+在 chapter 模式下，致谢标题的等级为章，nochapter 模式下则为节，
+并自动套用章或节的标题格式。
+你只需在该命令后直接书写致谢的内容即可。
+
+书写附录，需要另起一页，
+在 nochapter 模式下需要额外的 \verb|\newpage| 命令。
+在 chapter 模式下，因为章节标题自动新起一页，所以就无需手动分页了。
+在命令 $$\verb|\appendix|$$ 后开始附录。
+附录的章节标题及内容的书写与正文并无差别，只是编号的形式会作调整。
+
+至此，怎样使用该模板书写毕业论文，也基本讲解完了。
