@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/02/24 V1.8 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/04/27 V1.9 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -286,6 +286,13 @@
 %                       摘要环境设置
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifNJU@chapter
+  \newcommand{\pdftopmark}{0}
+\else
+  \newcommand{\pdftopmark}{1}
+\fi
+
 \newcommand{\makeckeywords}{\zihao{4}%
   \begin{Description}{关键词:}
     \item[关键词:] \zihao{-4}\NJU@ckeywords
@@ -297,7 +304,7 @@
   \end{Description}}
 
 \newenvironment{cabstract}
-  {\newpage\thispagestyle{empty}\pdfbookmark[0]{摘要}{cabstract}%
+  {\newpage\thispagestyle{empty}\pdfbookmark[\pdftopmark]{摘要}{cabstract}%
   \begin{center}
     \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）中文摘要}
   \end{center}
@@ -335,7 +342,7 @@
   {\vfill\kaishu\makeckeywords\newpage\cleardoublepage}
 
 \newenvironment{eabstract}
-  {\newpage\thispagestyle{empty}\pdfbookmark[0]{ABSTRACT}{eabstract}%
+  {\newpage\thispagestyle{empty}\pdfbookmark[\pdftopmark]{ABSTRACT}{eabstract}%
   \begin{center}
     \bf\kaishu\zihao{-2}\uuline{南京大学本科生毕业论文（设计）英文摘要}
   \end{center}
@@ -368,7 +375,7 @@
 %\end{center}\end{titlepage}}
 %    Chinesetitlepage
 \newcommand{\makectitlepage}
-  {\thispagestyle{empty}\pdfbookmark[0]{封面}{cover}%
+  {\thispagestyle{empty}\pdfbookmark[\pdftopmark]{封面}{cover}%
   \begin{titlepage}\vspace{3em}
     \includegraphics[width=0.14\textwidth]{njulogos/njulogo.pdf}\vspace{2.6em}
     \begin{center}
@@ -452,6 +459,9 @@
 %                         Change Log
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.9
+% 修正了 nochapter 下输出 pdf 书签级别错误
+%
 % 1.8
 % 修改了导师及职称的获取命令
 % 增加了致谢
