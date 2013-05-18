@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/04/27 V1.9 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/05/19 V2.0 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -18,9 +18,9 @@
 
 \newif\ifNJU@oneside
 \DeclareOption{oneside}{\NJU@onesidetrue%
-  \PassOptionsToClass{oneside}{ctexbook}\PassOptionsToClass{oneside}{ctexart}}
+  \PassOptionsToClass{oneside}{book}\PassOptionsToClass{oneside}{article}}
 \DeclareOption{twoside}{\NJU@onesidefalse%
-  \PassOptionsToClass{twoside}{ctexbook}\PassOptionsToClass{twoside}{ctexart}}
+  \PassOptionsToClass{twoside}{book}\PassOptionsToClass{twoside}{article}}
 
 \newif\ifNJU@pageheader
 \DeclareOption{pageheader}{\NJU@pageheadertrue}
@@ -46,18 +46,24 @@
 \DeclareOption{mathptm}{\NJU@notdefaultmathtrue\def\NJU@mathpackage{mathptmx}}
 \DeclareOption{mathtxf}{\NJU@notdefaultmathtrue\def\NJU@mathpackage{txfonts}}
 
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexart}}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 
 \ExecuteOptions{thesis,oneside,nopageheader,nochapter,longtitle,shortdepspe,defaultmath}
 \ProcessOptions\relax
 
-% 载入 ctex 文类
+% 载入文类
 \ifNJU@chapter
-  \LoadClass[UTF8,nofonts,a4paper,cs4size,fntef,fancyhdr]{ctexbook}
+  \LoadClass[a4paper,12pt]{book}
 \else
-  \LoadClass[UTF8,nofonts,a4paper,cs4size,fntef,fancyhdr]{ctexart}
+  \LoadClass[a4paper,12pt]{article}
 \fi
+
+\RequirePackage[no-math]{fontspec} %xelatex支持
+\RequirePackage[UTF8,nofonts,fntef,fancyhdr]{ctexcap} %中文支持
+% 字号对应
+\renewcommand{\normalsize}{\zihao{-4}}
+\renewcommand{\small}{\zihao{5}}
 
 \RequirePackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}   %页面设置
 
@@ -104,6 +110,8 @@
 
 \RequirePackage[table]{xcolor} %彩色支持
 
+\RequirePackage{enumerate} %自定义排序标签
+
 \RequirePackage{longtable} %长表格宏包
 \RequirePackage{booktabs} %三线表格宏包
 \RequirePackage{tabularx} %定宽度表格宏包
@@ -119,7 +127,6 @@
 
 \RequirePackage[numbers,sort&compress]{natbib}
 \RequirePackage{hypernat}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -157,7 +164,8 @@
 \setsansfont{Arial}
 \setmonofont{Courier New}
 
-\xeCJKsetup{AutoFakeSlant={true}}
+\xeCJKsetup{AutoFakeSlant={true}} %开启斜体
+%\xeCJKsetup{CheckSingle=true} %避免单字独占一行 导致抄录环境行尾字符向左靠
 
 \setCJKmainfont{SimSun}
 \setCJKsansfont{SimHei}
@@ -223,7 +231,7 @@
 \CTEXsetup[format={\sf\zihao{-4}}]{subsection}
 \CTEXsetup[format={\sf\zihao{-4}}]{subsubsection}
 \ifNJU@chapter
-  \titlecontents{chapter}[4em]{\vspace{1.6em}\sf\zihao{4}}%
+  \titlecontents{chapter}[4.6em]{\vspace{1.6em}\sf\zihao{4}}%
     {\contentslabel{4em}}{\hspace{-4em}}{\hfill\bf\contentspage}
 \else
   \titlecontents{section}[1.5em]{\vspace{1.6em}\sf\zihao{4}}%
@@ -293,12 +301,12 @@
   \newcommand{\pdftopmark}{1}
 \fi
 
-\newcommand{\makeckeywords}{\zihao{4}%
+\newcommand{\makeckeywords}{\zihao{-4}%
   \begin{Description}{关键词:}
     \item[关键词:] \zihao{-4}\NJU@ckeywords
   \end{Description}}
 
-\newcommand{\makeekeywords}{\zihao{4}%
+\newcommand{\makeekeywords}{\zihao{-4}%
   \begin{Description}{KEY WORDS:}
     \item[KEY WORDS:] \zihao{-4}\NJU@ekeywords
   \end{Description}}
@@ -339,7 +347,7 @@
   摘要:
 
   \vspace{1em}\zihao{-4}}
-  {\vfill\kaishu\makeckeywords\newpage\cleardoublepage}
+  {\kaishu\makeckeywords\newpage\cleardoublepage}
 
 \newenvironment{eabstract}
   {\newpage\thispagestyle{empty}\pdfbookmark[\pdftopmark]{ABSTRACT}{eabstract}%
@@ -357,7 +365,7 @@
   \end{Description}
 
   \vspace{1em}\zihao{-4}}
-  {\vfill\makeekeywords\newpage\cleardoublepage}
+  {\makeekeywords\newpage\cleardoublepage}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -459,6 +467,12 @@
 %                         Change Log
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.0
+% ！ 修正了公式字体中数字不是新罗马体的错误
+% ！ 修改了中英文关键词的位置
+% 重定义\small 图标标题修改为五号
+% 一级目录缩进调整
+%
 % 1.9
 % 修正了 nochapter 下输出 pdf 书签级别错误
 %
