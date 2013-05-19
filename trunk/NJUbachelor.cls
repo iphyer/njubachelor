@@ -62,8 +62,48 @@
 \RequirePackage[no-math]{fontspec} %xelatex支持
 \RequirePackage[UTF8,nofonts,fntef,fancyhdr]{ctexcap} %中文支持
 % 字号对应
-\renewcommand{\normalsize}{\zihao{-4}}
-\renewcommand{\small}{\zihao{5}}
+  \renewcommand\normalsize{% 12bp
+    \@setfontsize\normalsize{\CTEX@fs@sfour}{\CTEX@fs@sfourskip}%
+    \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+    \belowdisplayskip \abovedisplayskip
+    \let\@listi\@listI}
+  \normalsize
+  \renewcommand\small{% 10.5bp
+    \@setfontsize\small{\CTEX@fs@five}{\CTEX@fs@fiveskip}%
+    \abovedisplayskip 11\p@ \@plus3\p@ \@minus6\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+    \def\@listi{\leftmargin\leftmargini
+                \topsep 9\p@ \@plus3\p@ \@minus5\p@
+                \parsep 4.5\p@ \@plus2\p@ \@minus\p@
+                \itemsep \parsep}%
+    \belowdisplayskip \abovedisplayskip}
+  \renewcommand\footnotesize{% 9bp
+    \@setfontsize\footnotesize{\CTEX@fs@sfive}{\CTEX@fs@sfiveskip}%
+    \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+    \def\@listi{\leftmargin\leftmargini
+                \topsep 6\p@ \@plus2\p@ \@minus2\p@
+                \parsep 3\p@ \@plus2\p@ \@minus\p@
+                \itemsep \parsep}%
+    \belowdisplayskip \abovedisplayskip}
+  \renewcommand\scriptsize{% 7.5bp
+    \@setfontsize\scriptsize{\CTEX@fs@six}{\CTEX@fs@sixskip}}
+  \renewcommand\tiny{% 6.5bp
+    \@setfontsize\tiny{\CTEX@fs@ssix}{\CTEX@fs@ssixskip}}
+  \renewcommand\large{% 15bp
+    \@setfontsize\large{\CTEX@fs@sthree}{\CTEX@fs@sthreeskip}}
+  \renewcommand\Large{% 18bp
+    \@setfontsize\Large{\CTEX@fs@stwo}{\CTEX@fs@stwoskip}}
+  \renewcommand\LARGE{% 22bp
+    \@setfontsize\LARGE{\CTEX@fs@two}{\CTEX@fs@twoskip}}
+  \renewcommand\huge{% 24bp
+    \@setfontsize\huge{\CTEX@fs@sone}{\CTEX@fs@soneskip}}
+  \renewcommand\Huge{% 26bp
+    \@setfontsize\Huge{\CTEX@fs@one}{\CTEX@fs@oneskip}}
 
 \RequirePackage[left=3.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}   %页面设置
 
@@ -230,9 +270,14 @@
 \fi
 \CTEXsetup[format={\sf\zihao{-4}}]{subsection}
 \CTEXsetup[format={\sf\zihao{-4}}]{subsubsection}
+
 \ifNJU@chapter
-  \titlecontents{chapter}[4.6em]{\vspace{1.6em}\sf\zihao{4}}%
+  \titlecontents{chapter}[4em/12*14]{\vspace{1.6em}\sf\zihao{4}}%
     {\contentslabel{4em}}{\hspace{-4em}}{\hfill\bf\contentspage}
+  \titlecontents{section}[4em/12*14]{}{\contentslabel{2.5em}}
+    {\hspace{-2.5em}}{~\titlerule*[1pc]{$\cdot$}\contentspage}
+  \titlecontents{subsection}[4em/12*14+3.2em]{}{\contentslabel{3.2em}}
+    {\hspace{-3.2em}}{~\titlerule*[1pc]{$\cdot$}\contentspage}
 \else
   \titlecontents{section}[1.5em]{\vspace{1.6em}\sf\zihao{4}}%
     {\contentslabel{1.5em}}{\hspace{-1.5em}}{\hfill\bf\contentspage}
