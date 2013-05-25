@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/05/19 V2.0 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/05/25 V2.1 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -207,7 +207,7 @@
 \xeCJKsetup{AutoFakeSlant={true}} %开启斜体
 %\xeCJKsetup{CheckSingle=true} %避免单字独占一行 导致抄录环境行尾字符向左靠
 
-\setCJKmainfont{SimSun}
+\setCJKmainfont[AutoFakeBold={true},AutoFakeSlant={true}]{SimSun}
 \setCJKsansfont{SimHei}
 \setCJKmonofont{FangSong}
 
@@ -512,6 +512,9 @@
 %                         Change Log
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.1
+% 修复了windows下无法复制出正文文本的错误
+%
 % 2.0
 % ！ 修正了公式字体中数字不是新罗马体的错误
 % ！ 修改了中英文关键词的位置
