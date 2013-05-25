@@ -213,8 +213,8 @@
 
 \setCJKfamilyfont{zhsong}{SimSun}
 \setCJKfamilyfont{zhhei}{SimHei}
-\setCJKfamilyfont{zhkai}{KaiTi}
 \setCJKfamilyfont{zhfs}{FangSong}
+\setCJKfamilyfont{zhkai}{KaiTi}
 \setCJKfamilyfont{zhli}{LiSu}
 \setCJKfamilyfont{zhyou}{YouYuan}
 \setCJKfamilyfont{zhwei}{STXinwei}
@@ -225,8 +225,8 @@
 
 \providecommand*{\songti}{\CJKfamily{zhsong}} % 宋体
 \providecommand*{\heiti}{\CJKfamily{zhhei}}   % 黑体
-\providecommand*{\kaishu}{\CJKfamily{zhkai}}  % 楷书
 \providecommand*{\fangsong}{\CJKfamily{zhfs}} % 仿宋
+\providecommand*{\kaishu}{\CJKfamily{zhkai}}  % 楷书
 \providecommand*{\lishu}{\CJKfamily{zhli}}    % 隶书
 \providecommand*{\youyuan}{\CJKfamily{zhyou}} % 幼圆
 \providecommand*{\xinwei}{\CJKfamily{zhwei}}  % 新魏
@@ -261,8 +261,8 @@
 %                     标题格式/目录标题格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},%
-           nameformat={\zihao{3}\bf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
+\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf\songti},%
+           nameformat={\zihao{3}\bf\songti},beforeskip={1.2em},afterskip={1.8em}]{chapter}
 \ifNJU@chapter
   \CTEXsetup[format={\sf\zihao{4}}]{section}
 \else
@@ -514,6 +514,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 2.1
 % 修复了windows下无法复制出正文文本的错误
+% (楷体的文本依旧无法复制)
 %
 % 2.0
 % ！ 修正了公式字体中数字不是新罗马体的错误
