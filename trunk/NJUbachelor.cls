@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/05/25 V2.1 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/05/26 V2.1 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -187,7 +187,7 @@
 % 一种样式
 \newcommand{\makesomething}[1]{%
   \begin{center}
-    \zihao{3}\songti\bf #1
+    \zihao{3}\bf\songti #1
   \end{center}}
 
 
@@ -253,7 +253,7 @@
 \ifNJU@chapter
   \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
 \else
-  \CTEXoptions[contentsname={\zihao{3}\songti\bf 目~~~录}]
+  \CTEXoptions[contentsname={\zihao{3}\bf\songti 目~~~录}]
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -433,7 +433,7 @@
     \includegraphics[width=0.14\textwidth]{njulogos/njulogo.pdf}\vspace{2.6em}
     \begin{center}
       \includegraphics[width=0.5\textwidth]{njulogos/njuname.pdf}\\[2.8em]
-      \zihao{1}\bf
+      \zihao{1}\bf\songti
       \ifNJU@thesis 本~~科~~毕~~业~~论~~文
       \else         本~~科~~毕~~业~~设~~计
       \fi
@@ -512,6 +512,9 @@
 %                         Change Log
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.2
+% 修复了上次更新遗留的一些字体没有加粗的错误
+%
 % 2.1
 % 修复了windows下无法复制出正文文本的错误
 % (楷体的文本依旧无法复制)
