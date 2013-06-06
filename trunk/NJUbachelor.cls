@@ -10,7 +10,7 @@
 
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{NJUbachelor}[2013/05/26 V2.1 NJUbachelor Style for NJUers Created by Zlcao]
+\ProvidesClass{NJUbachelor}[2013/06/06 V2.3 NJUbachelor Style for NJUers Created by Zlcao]
 
 \newif\ifNJU@thesis
 \DeclareOption{thesis}{\NJU@thesistrue}
@@ -187,7 +187,7 @@
 % 一种样式
 \newcommand{\makesomething}[1]{%
   \begin{center}
-    \zihao{3}\bf\songti #1
+    \zihao{3}\songti\bf #1
   \end{center}}
 
 
@@ -207,14 +207,14 @@
 \xeCJKsetup{AutoFakeSlant={true}} %开启斜体
 %\xeCJKsetup{CheckSingle=true} %避免单字独占一行 导致抄录环境行尾字符向左靠
 
-\setCJKmainfont[AutoFakeBold={true},AutoFakeSlant={true}]{SimSun}
+\setCJKmainfont{SimSun}
 \setCJKsansfont{SimHei}
 \setCJKmonofont{FangSong}
 
 \setCJKfamilyfont{zhsong}{SimSun}
 \setCJKfamilyfont{zhhei}{SimHei}
-\setCJKfamilyfont{zhfs}{FangSong}
 \setCJKfamilyfont{zhkai}{KaiTi}
+\setCJKfamilyfont{zhfs}{FangSong}
 \setCJKfamilyfont{zhli}{LiSu}
 \setCJKfamilyfont{zhyou}{YouYuan}
 \setCJKfamilyfont{zhwei}{STXinwei}
@@ -225,8 +225,8 @@
 
 \providecommand*{\songti}{\CJKfamily{zhsong}} % 宋体
 \providecommand*{\heiti}{\CJKfamily{zhhei}}   % 黑体
-\providecommand*{\fangsong}{\CJKfamily{zhfs}} % 仿宋
 \providecommand*{\kaishu}{\CJKfamily{zhkai}}  % 楷书
+\providecommand*{\fangsong}{\CJKfamily{zhfs}} % 仿宋
 \providecommand*{\lishu}{\CJKfamily{zhli}}    % 隶书
 \providecommand*{\youyuan}{\CJKfamily{zhyou}} % 幼圆
 \providecommand*{\xinwei}{\CJKfamily{zhwei}}  % 新魏
@@ -253,7 +253,7 @@
 \ifNJU@chapter
   \CTEXoptions[contentsname={目~~~录},indexname={索~~~引}]
 \else
-  \CTEXoptions[contentsname={\zihao{3}\bf\songti 目~~~录}]
+  \CTEXoptions[contentsname={\zihao{3}\songti\bf 目~~~录}]
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -261,8 +261,8 @@
 %                     标题格式/目录标题格式
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf\songti},%
-           nameformat={\zihao{3}\bf\songti},beforeskip={1.2em},afterskip={1.8em}]{chapter}
+\CTEXsetup[number=\arabic{chapter},titleformat={\zihao{3}\bf},%
+           nameformat={\zihao{3}\bf},beforeskip={1.2em},afterskip={1.8em}]{chapter}
 \ifNJU@chapter
   \CTEXsetup[format={\sf\zihao{4}}]{section}
 \else
@@ -391,7 +391,7 @@
   \uline{\hfill{\NJU@cmentor\ \NJU@cmentortitle}\hfill\mbox{}}\\[0.6em]
   摘要:
 
-  \vspace{1em}\zihao{-4}}
+  \vspace{1em}\zihao{-4}\setlength{\baselineskip}{1.12\baselineskip}}
   {\kaishu\makeckeywords\newpage\cleardoublepage}
 
 \newenvironment{eabstract}
@@ -409,7 +409,7 @@
     \item[ABSTRACT:]
   \end{Description}
 
-  \vspace{1em}\zihao{-4}}
+  \vspace{0.2em}\zihao{-4}}
   {\makeekeywords\newpage\cleardoublepage}
 
 
@@ -433,7 +433,7 @@
     \includegraphics[width=0.14\textwidth]{njulogos/njulogo.pdf}\vspace{2.6em}
     \begin{center}
       \includegraphics[width=0.5\textwidth]{njulogos/njuname.pdf}\\[2.8em]
-      \zihao{1}\bf\songti
+      \zihao{1}\bf
       \ifNJU@thesis 本~~科~~毕~~业~~论~~文
       \else         本~~科~~毕~~业~~设~~计
       \fi
@@ -512,6 +512,11 @@
 %                         Change Log
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.3
+% 修改了中文摘要的行间距
+% 修正了英文摘要的与ABSTRACT字样的行间距
+% 撤销了之前的修改……中文正文仍不支持拷出
+%
 % 2.2
 % 修复了上次更新遗留的一些字体没有加粗的错误
 %
